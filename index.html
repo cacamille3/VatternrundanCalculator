@@ -211,10 +211,9 @@ button.act.blu{background:var(--blu);color:var(--cream)}
 <footer data-i18n="footer">Tjofräs! · Byggd med dalahäst-energi 🐴 · Tider är riktvärden</footer>
 
 <script>
-// Depots: name, km, leg distance (Str), baseline leg speed.
-// Baseline speeds are relative to BASE; the avg input scales every leg proportionally.
+// Depots: name, km, leg distance (Str), baseline leg speed (each leg's relative pace).
+// The avg input scales every leg proportionally against BASE (computed below).
 // Margin (±min) and stop (min) are per-depot and user-editable — see the arrays below.
-const BASE = 32.9;
 const DEPOTS = [
   {n:"Motala ut",   km:0,   str:null, spd:null, start:true},
   {n:"Ödeshög",     km:47,  str:47,   spd:32.9},
@@ -228,6 +227,12 @@ const DEPOTS = [
   {n:"Godegård",    km:284, str:28,   spd:30.0},
   {n:"Motala in",   km:315, str:31,   spd:32.9},
 ];
+
+// Route length + BASE derived from the legs. BASE is the distance-weighted harmonic
+// mean of the leg speeds, so the km/h you enter equals the rolling-average stat
+// (with no stops/margins) while each leg keeps its relative pace.
+const ROUTE_KM = DEPOTS.reduce((s,d)=>s+(d.str||0),0);
+const BASE = ROUTE_KM / DEPOTS.reduce((s,d)=>s+(d.str!=null?d.str/d.spd:0),0);
 
 // Per-depot editable state — everything starts at 0.
 let margins = DEPOTS.map(()=>0);
@@ -354,8 +359,8 @@ function calc(){
 
   const totalMin=elapsed;          // since start to finish (incl stops & margins)
   const rideMin=totalMin-stopTotal;
-  const totalAvg=315/(totalMin/60);
-  const rideAvg=315/(rideMin/60);
+  const totalAvg=ROUTE_KM/(totalMin/60);
+  const rideAvg=ROUTE_KM/(rideMin/60);
   return {out,startMin,totalMin,rideMin,stopTotal,totalAvg,rideAvg};
 }
 
