@@ -135,6 +135,7 @@ button.act.blu{background:var(--blu);color:var(--cream)}
 @media(max-width:768px){
   .kicker{letter-spacing:.22em;font-size:11px}
   .horse{font-size:44px}
+  .controls{grid-template-columns:1fr 1fr;gap:12px;padding:16px}
   .thead .h-hide,.cell.c-hide{display:none}
   .thead,.row{grid-template-columns:1.5fr .55fr .85fr .85fr .9fr .9fr}
   .thead div{padding:8px 3px;font-size:10px;letter-spacing:.02em}
@@ -195,7 +196,6 @@ button.act.blu{background:var(--blu);color:var(--cream)}
   </div>
 
   <div class="btns">
-    <button class="act blu" data-i18n="btnPrint" onclick="window.print()">🖨️ Skriv ut</button>
     <button class="act" data-i18n="btnReset" onclick="resetAll()">↺ Återställ</button>
   </div>
   <div class="langsel">
@@ -221,8 +221,7 @@ const DEPOTS = [
   {n:"Ölmstad",     km:83,  str:36,   spd:31.5},
   {n:"Jönköping",   km:104, str:21,   spd:35.7},
   {n:"Fagerhult",   km:133, str:29,   spd:32.9},
-  {n:"Vattendepå",  km:143, str:10,   spd:32.9},
-  {n:"Hjo",         km:171, str:28,   spd:32.9},
+  {n:"Hjo",         km:171, str:38,   spd:32.9},
   {n:"Karlsborg",   km:204, str:33,   spd:32.9},
   {n:"Boviken",     km:225, str:21,   spd:32.9},
   {n:"Askersund",   km:256, str:31,   spd:32.9},
@@ -244,7 +243,7 @@ const I18N = {
     thDepot:"Depå", thKm:"km", thStr:"Str", thMarg:"Marg", thStop:"Stopp", thSince:"Sedan", thClock:"Klockan",
     legStart:"Start", legPlanned:"Planerat depåstopp", legRolling:"Rullande depå",
     legMarg:"Marg = manuell justering ±min (motvind/medvind/backar)",
-    btnPrint:"🖨️ Skriv ut", btnReset:"↺ Återställ",
+    btnReset:"↺ Återställ",
     statRide:"Rullsnitt", statTotal:"Totalsnitt", statRideTime:"Cykeltid", statStopTime:"Stopptid",
     footer:"Tjofräs! · Byggd med dalahäst-energi 🐴 · Tider är riktvärden",
   },
@@ -256,10 +255,10 @@ const I18N = {
     thDepot:"Depot", thKm:"km", thStr:"Leg", thMarg:"Marg", thStop:"Stop", thSince:"Elapsed", thClock:"Clock",
     legStart:"Start", legPlanned:"Planned depot stop", legRolling:"Rolling depot",
     legMarg:"Marg = manual adjustment ±min (headwind/tailwind/hills)",
-    btnPrint:"🖨️ Print", btnReset:"↺ Reset",
+    btnReset:"↺ Reset",
     statRide:"Rolling avg", statTotal:"Total avg", statRideTime:"Ride time", statStopTime:"Stop time",
     footer:"Tjofräs! · Built with dala-horse energy 🐴 · Times are guidelines",
-    depots:{"Motala ut":"Motala start","Motala in":"Motala finish","Vattendepå":"Water stop"},
+    depots:{"Motala ut":"Motala start","Motala in":"Motala finish"},
   },
   fr:{
     title:"Vätternrundan · Planificateur de temps idéal",
@@ -269,10 +268,10 @@ const I18N = {
     thDepot:"Dépôt", thKm:"km", thStr:"Étape", thMarg:"Marge", thStop:"Arrêt", thSince:"Écoulé", thClock:"Heure",
     legStart:"Départ", legPlanned:"Arrêt dépôt planifié", legRolling:"Dépôt mobile",
     legMarg:"Marge = ajustement manuel ±min (vent de face/arrière/côtes)",
-    btnPrint:"🖨️ Imprimer", btnReset:"↺ Réinitialiser",
+    btnReset:"↺ Réinitialiser",
     statRide:"Moy. roulante", statTotal:"Moy. totale", statRideTime:"Temps de vélo", statStopTime:"Temps d'arrêt",
     footer:"Tjofräs ! · Conçu avec l'énergie du cheval de Dalécarlie 🐴 · Temps indicatifs",
-    depots:{"Motala ut":"Motala (départ)","Motala in":"Motala (arrivée)","Vattendepå":"Point d'eau"},
+    depots:{"Motala ut":"Motala (départ)","Motala in":"Motala (arrivée)"},
   },
   de:{
     title:"Vätternrundan · Idealzeit-Planer",
@@ -282,10 +281,10 @@ const I18N = {
     thDepot:"Depot", thKm:"km", thStr:"Etappe", thMarg:"Marg", thStop:"Stopp", thSince:"Dauer", thClock:"Uhrzeit",
     legStart:"Start", legPlanned:"Geplanter Depot-Stopp", legRolling:"Rollendes Depot",
     legMarg:"Marg = manuelle Anpassung ±Min (Gegenwind/Rückenwind/Hügel)",
-    btnPrint:"🖨️ Drucken", btnReset:"↺ Zurücksetzen",
+    btnReset:"↺ Zurücksetzen",
     statRide:"Rollschnitt", statTotal:"Gesamtschnitt", statRideTime:"Fahrzeit", statStopTime:"Stoppzeit",
     footer:"Tjofräs! · Gebaut mit Dalapferd-Energie 🐴 · Zeiten sind Richtwerte",
-    depots:{"Motala ut":"Motala (Start)","Motala in":"Motala (Ziel)","Vattendepå":"Wasserstation"},
+    depots:{"Motala ut":"Motala (Start)","Motala in":"Motala (Ziel)"},
   },
 };
 
