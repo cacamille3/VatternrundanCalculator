@@ -57,6 +57,15 @@ h1 em{font-style:italic;color:var(--gul)}
   filter:drop-shadow(0 6px 0 rgba(0,0,0,.2))}
 .horse.left{left:24px;right:auto;transform:scaleX(-1) rotate(-8deg)}
 
+.langsel{position:absolute;top:14px;right:16px;display:flex;align-items:center;z-index:5}
+.langsel select{font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;font-size:13px;padding:7px 10px;border:2px solid var(--ink);
+  border-radius:10px;background:var(--gul);color:var(--blu);cursor:pointer;
+  box-shadow:2px 2px 0 var(--ink);transition:.1s}
+.langsel select option{color:var(--blu)}
+.langsel select:hover{background:var(--gul-soft)}
+.langsel select:focus{outline:none;background:var(--gul-soft);box-shadow:3px 3px 0 var(--ink)}
+
 main{max-width:1180px;margin:0 auto;padding:34px 18px 80px}
 
 .controls{
@@ -97,10 +106,9 @@ main{max-width:1180px;margin:0 auto;padding:34px 18px 80px}
 .depot{display:flex;align-items:center;gap:9px;font-family:'Fraunces';font-weight:600;font-size:17px}
 .km-pill{font-family:'Archivo';font-size:11px;font-weight:700;background:var(--blu);color:#fff;
   border-radius:20px;padding:2px 8px}
-.stop .depot .dot{width:10px;height:10px;border-radius:50%;background:var(--red);
-  box-shadow:0 0 0 3px rgba(193,39,45,.25)}
-.start .depot .dot{width:10px;height:10px;border-radius:50%;background:var(--gul);
-  box-shadow:0 0 0 3px rgba(255,205,0,.4)}
+.depot .dot{width:10px;height:10px;border-radius:50%;background:transparent;flex:none}
+.stop .depot .dot{background:var(--red);box-shadow:0 0 0 3px rgba(193,39,45,.25)}
+.start .depot .dot{background:var(--gul);box-shadow:0 0 0 3px rgba(255,205,0,.4)}
 .clock{font-family:'Fraunces';font-weight:900;font-size:18px;color:var(--blu)}
 .row.stop .clock{color:var(--red)}
 .miniinput{width:62px;font-family:'Archivo';font-weight:700;font-size:14px;text-align:center;
@@ -110,6 +118,7 @@ main{max-width:1180px;margin:0 auto;padding:34px 18px 80px}
 
 .legend{display:flex;flex-wrap:wrap;gap:18px;margin:24px 4px 0;font-size:13px;font-weight:700}
 .legend span{display:flex;align-items:center;gap:7px}
+.legend b{font-weight:inherit}
 .sw{width:14px;height:14px;border-radius:4px;border:2px solid var(--ink)}
 
 footer{text-align:center;padding:30px;font-family:'Archivo Narrow';letter-spacing:.1em;
@@ -124,37 +133,42 @@ button.act.blu{background:var(--blu);color:var(--cream)}
 
 @media(max-width:760px){
   .thead .h-hide,.cell.c-hide{display:none}
-  .thead,.row{grid-template-columns:1.5fr .8fr 1fr 1fr}
+  .thead,.row{grid-template-columns:1.2fr .5fr .8fr .8fr .85fr .85fr}
+  .cell{padding:9px 5px;font-size:13px}
+  .depot{font-size:14px;gap:6px}
+  .km-pill{font-size:10px;padding:2px 5px}
+  .miniinput{width:100%;padding:5px 2px;font-size:13px}
+  .clock{font-size:15px}
 }
 </style>
 </head>
 <body>
 <div class="flagband"></div>
 <header>
+  <div class="langsel">
+    <select id="lang" aria-label="Language / Språk">
+      <option value="sv">🐴 Svenska</option>
+      <option value="en">🫖 English</option>
+      <option value="fr">🥐 Français</option>
+      <option value="de">🥨 Deutsch</option>
+    </select>
+  </div>
   <span class="horse left">🐴</span><span class="horse">🐴</span>
-  <div class="kicker">Idealtider · 315 km runt Vättern</div>
+  <div class="kicker" data-i18n="kicker">Idealtider · 315 km runt Vättern</div>
   <h1>VÄTTERN<em>RUNDAN</em></h1>
-  <p class="sub">Ställ in din starttid och dina depåstopp — så räknar planeraren ut dina klocktider, rullsnitt och cykeltid på direkten. Lycka till, cyklist! 🚴</p>
+  <p class="sub" data-i18n="sub">Ställ in din starttid och dina depåstopp — så räknar planeraren ut dina klocktider, rullsnitt och cykeltid på direkten. Lycka till, cyklist! 🚴</p>
 </header>
 <div class="flagband"></div>
 
 <main>
   <div class="controls">
     <div class="ctl">
-      <label>Starttid</label>
+      <label data-i18n="startTime">Starttid</label>
       <input type="time" id="start" value="05:03">
     </div>
     <div class="ctl">
-      <label>Stopp Fagerhult (min)</label>
-      <input type="number" id="stopFag" value="10" min="0" max="120">
-    </div>
-    <div class="ctl">
-      <label>Stopp Boviken (min)</label>
-      <input type="number" id="stopBov" value="10" min="0" max="120">
-    </div>
-    <div class="ctl">
-      <label>Generellt rullsnitt (km/h)</label>
-      <input type="number" id="avg" value="32.9" step="0.1" min="15" max="50">
+      <label data-i18n="avg">Generellt rullsnitt (km/h)</label>
+      <input type="number" id="avg" value="26.5" step="0.1" min="15" max="50">
     </div>
   </div>
 
@@ -162,50 +176,133 @@ button.act.blu{background:var(--blu);color:var(--cream)}
 
   <div class="tablewrap">
     <div class="thead">
-      <div>Depå</div>
-      <div>km</div>
-      <div class="h-hide">Str</div>
-      <div class="h-hide">Marg</div>
-      <div>Stopp</div>
-      <div>Sedan start</div>
-      <div>Klockan</div>
+      <div data-i18n="thDepot">Depå</div>
+      <div data-i18n="thKm">km</div>
+      <div class="h-hide" data-i18n="thStr">Str</div>
+      <div data-i18n="thMarg">Marg</div>
+      <div data-i18n="thStop">Stopp</div>
+      <div data-i18n="thSince">Sedan start</div>
+      <div data-i18n="thClock">Klockan</div>
     </div>
     <div id="rows"></div>
   </div>
 
   <div class="legend">
-    <span><i class="sw" style="background:var(--gul)"></i> Start</span>
-    <span><i class="sw" style="background:var(--red)"></i> Planerat depåstopp</span>
-    <span><i class="sw" style="background:var(--blu)"></i> Rullande depå</span>
-    <span>Marg = manuell justering ±min (motvind/medvind/backar)</span>
+    <span><i class="sw" style="background:var(--gul)"></i> <b data-i18n="legStart">Start</b></span>
+    <span><i class="sw" style="background:var(--red)"></i> <b data-i18n="legPlanned">Planerat depåstopp</b></span>
+    <span><i class="sw" style="background:var(--blu)"></i> <b data-i18n="legRolling">Rullande depå</b></span>
+    <span data-i18n="legMarg">Marg = manuell justering ±min (motvind/medvind/backar)</span>
   </div>
 
   <div class="btns">
-    <button class="act blu" onclick="window.print()">🖨️ Skriv ut</button>
-    <button class="act" onclick="resetAll()">↺ Återställ</button>
+    <button class="act blu" data-i18n="btnPrint" onclick="window.print()">🖨️ Skriv ut</button>
+    <button class="act" data-i18n="btnReset" onclick="resetAll()">↺ Återställ</button>
   </div>
 </main>
 
-<footer>Tjofräs! · Byggd med dalahäst-energi 🐴 · Tider är riktvärden</footer>
+<footer data-i18n="footer">Tjofräs! · Byggd med dalahäst-energi 🐴 · Tider är riktvärden</footer>
 
 <script>
-// Depots: name, km, leg distance (Str), baseline leg speed, margin min, stopId.
+// Depots: name, km, leg distance (Str), baseline leg speed.
 // Baseline speeds are relative to BASE; the avg input scales every leg proportionally.
+// Margin (±min) and stop (min) are per-depot and user-editable — see the arrays below.
 const BASE = 32.9;
 const DEPOTS = [
-  {n:"Motala ut",   km:0,   str:null, spd:null, marg:0,  start:true},
-  {n:"Ödeshög",     km:47,  str:47,   spd:32.9, marg:0},
-  {n:"Ölmstad",     km:83,  str:36,   spd:31.5, marg:0},
-  {n:"Jönköping",   km:104, str:21,   spd:35.7, marg:-3},
-  {n:"Fagerhult",   km:133, str:29,   spd:32.9, marg:0,  stopId:"stopFag"},
-  {n:"Vattendepå",  km:143, str:10,   spd:32.9, marg:0},
-  {n:"Hjo",         km:171, str:28,   spd:32.9, marg:0},
-  {n:"Karlsborg",   km:204, str:33,   spd:32.9, marg:0},
-  {n:"Boviken",     km:225, str:21,   spd:32.9, marg:0,  stopId:"stopBov"},
-  {n:"Askersund",   km:256, str:31,   spd:32.9, marg:0},
-  {n:"Godegård",    km:284, str:28,   spd:30.0, marg:5},
-  {n:"Motala in",   km:315, str:31,   spd:32.9, marg:0},
+  {n:"Motala ut",   km:0,   str:null, spd:null, start:true},
+  {n:"Ödeshög",     km:47,  str:47,   spd:32.9},
+  {n:"Ölmstad",     km:83,  str:36,   spd:31.5},
+  {n:"Jönköping",   km:104, str:21,   spd:35.7},
+  {n:"Fagerhult",   km:133, str:29,   spd:32.9},
+  {n:"Vattendepå",  km:143, str:10,   spd:32.9},
+  {n:"Hjo",         km:171, str:28,   spd:32.9},
+  {n:"Karlsborg",   km:204, str:33,   spd:32.9},
+  {n:"Boviken",     km:225, str:21,   spd:32.9},
+  {n:"Askersund",   km:256, str:31,   spd:32.9},
+  {n:"Godegård",    km:284, str:28,   spd:30.0},
+  {n:"Motala in",   km:315, str:31,   spd:32.9},
 ];
+
+// Per-depot editable state — everything starts at 0.
+let margins = DEPOTS.map(()=>0);
+let stops   = DEPOTS.map(()=>0);
+
+// Translations. `depots` overrides the descriptive depot names; plain town names fall through.
+const I18N = {
+  sv:{
+    title:"Vätternrundan · Idealtidsplanerare",
+    kicker:"Idealtider · 315 km runt Vättern",
+    sub:"Ställ in din starttid och dina depåstopp — så räknar planeraren ut dina klocktider, rullsnitt och cykeltid på direkten. Lycka till, cyklist! 🚴",
+    startTime:"Starttid", avg:"Generellt rullsnitt (km/h)",
+    thDepot:"Depå", thKm:"km", thStr:"Str", thMarg:"Marg", thStop:"Stopp", thSince:"Sedan start", thClock:"Klockan",
+    legStart:"Start", legPlanned:"Planerat depåstopp", legRolling:"Rullande depå",
+    legMarg:"Marg = manuell justering ±min (motvind/medvind/backar)",
+    btnPrint:"🖨️ Skriv ut", btnReset:"↺ Återställ",
+    statRide:"Rullsnitt", statTotal:"Totalsnitt", statRideTime:"Cykeltid", statStopTime:"Stopptid",
+    footer:"Tjofräs! · Byggd med dalahäst-energi 🐴 · Tider är riktvärden",
+  },
+  en:{
+    title:"Vätternrundan · Ideal Time Planner",
+    kicker:"Ideal times · 315 km around Vättern",
+    sub:"Set your start time and your depot stops — the planner instantly works out your clock times, rolling average and ride time. Good luck, cyclist! 🚴",
+    startTime:"Start time", avg:"General rolling avg (km/h)",
+    thDepot:"Depot", thKm:"km", thStr:"Leg", thMarg:"Marg", thStop:"Stop", thSince:"Since start", thClock:"Clock",
+    legStart:"Start", legPlanned:"Planned depot stop", legRolling:"Rolling depot",
+    legMarg:"Marg = manual adjustment ±min (headwind/tailwind/hills)",
+    btnPrint:"🖨️ Print", btnReset:"↺ Reset",
+    statRide:"Rolling avg", statTotal:"Total avg", statRideTime:"Ride time", statStopTime:"Stop time",
+    footer:"Tjofräs! · Built with dala-horse energy 🐴 · Times are guidelines",
+    depots:{"Motala ut":"Motala start","Motala in":"Motala finish","Vattendepå":"Water stop"},
+  },
+  fr:{
+    title:"Vätternrundan · Planificateur de temps idéal",
+    kicker:"Temps idéaux · 315 km autour du Vättern",
+    sub:"Réglez votre départ et vos arrêts aux dépôts — le planificateur calcule vos horaires, moyennes et temps de vélo. Bonne chance ! 🚴",
+    startTime:"Heure de départ", avg:"Moyenne roulante générale (km/h)",
+    thDepot:"Dépôt", thKm:"km", thStr:"Étape", thMarg:"Marge", thStop:"Arrêt", thSince:"Depuis départ", thClock:"Heure",
+    legStart:"Départ", legPlanned:"Arrêt dépôt planifié", legRolling:"Dépôt mobile",
+    legMarg:"Marge = ajustement manuel ±min (vent de face/arrière/côtes)",
+    btnPrint:"🖨️ Imprimer", btnReset:"↺ Réinitialiser",
+    statRide:"Moy. roulante", statTotal:"Moy. totale", statRideTime:"Temps de vélo", statStopTime:"Temps d'arrêt",
+    footer:"Tjofräs ! · Conçu avec l'énergie du cheval de Dalécarlie 🐴 · Temps indicatifs",
+    depots:{"Motala ut":"Motala (départ)","Motala in":"Motala (arrivée)","Vattendepå":"Point d'eau"},
+  },
+  de:{
+    title:"Vätternrundan · Idealzeit-Planer",
+    kicker:"Idealzeiten · 315 km rund um den Vättern",
+    sub:"Stelle Startzeit und Depot-Stopps ein — der Planer berechnet Uhrzeiten, Rollschnitt und Fahrzeit. Viel Erfolg! 🚴",
+    startTime:"Startzeit", avg:"Allg. Rollschnitt (km/h)",
+    thDepot:"Depot", thKm:"km", thStr:"Etappe", thMarg:"Marg", thStop:"Stopp", thSince:"Seit Start", thClock:"Uhrzeit",
+    legStart:"Start", legPlanned:"Geplanter Depot-Stopp", legRolling:"Rollendes Depot",
+    legMarg:"Marg = manuelle Anpassung ±Min (Gegenwind/Rückenwind/Hügel)",
+    btnPrint:"🖨️ Drucken", btnReset:"↺ Zurücksetzen",
+    statRide:"Rollschnitt", statTotal:"Gesamtschnitt", statRideTime:"Fahrzeit", statStopTime:"Stoppzeit",
+    footer:"Tjofräs! · Gebaut mit Dalapferd-Energie 🐴 · Zeiten sind Richtwerte",
+    depots:{"Motala ut":"Motala (Start)","Motala in":"Motala (Ziel)","Vattendepå":"Wasserstation"},
+  },
+};
+
+let LANG='sv';
+try{
+  const saved=localStorage.getItem('vr_lang');
+  if(saved){LANG=saved;}
+  else{const nav=(navigator.language||'sv').slice(0,2).toLowerCase(); if(I18N[nav]) LANG=nav;}
+}catch(e){}
+if(!I18N[LANG]) LANG='sv';
+
+function applyLang(lang){
+  if(!I18N[lang]) lang='sv';
+  LANG=lang;
+  const t=I18N[lang];
+  document.documentElement.lang=lang;
+  document.title=t.title;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]!=null) el.textContent=t[k];
+  });
+  document.getElementById('lang').value=lang;
+  try{localStorage.setItem('vr_lang',lang);}catch(e){}
+  buildRows();
+}
 
 const pad=n=>String(n).padStart(2,'0');
 const fmt=m=>{m=Math.round(m);return pad(Math.floor(m/60)%24)+":"+pad(((m%60)+60)%60)};
@@ -215,20 +312,20 @@ function calc(){
   const startStr=document.getElementById('start').value||"05:03";
   const [sh,sm]=startStr.split(':').map(Number);
   const startMin=sh*60+sm;
-  const avg=parseFloat(document.getElementById('avg').value)||32.9;
+  const avg=parseFloat(document.getElementById('avg').value)||26.5;
 
   let elapsed=0, stopTotal=0, marginTotal=0;
   const out=[];
   DEPOTS.forEach((d,i)=>{
-    let legMin=0, marg=d.marg||0;
+    let legMin=0;
+    const marg=margins[i]||0;
     if(d.str!=null){
       const spd=(d.spd||BASE)*(avg/BASE);   // scale leg speed with the average input
       legMin=(d.str/spd)*60;
     }
     const arrive=elapsed+legMin+marg;
     marginTotal+=marg;
-    let stop=0;
-    if(d.stopId){stop=parseFloat(document.getElementById(d.stopId).value)||0;}
+    const stop=stops[i]||0;
     const depart=arrive+stop;
     stopTotal+=stop;
     out.push({...d,marg,arriveSince:arrive,departSince:depart,stop,
@@ -243,45 +340,66 @@ function calc(){
   return {out,startMin,totalMin,rideMin,stopTotal,totalAvg,rideAvg};
 }
 
-function render(){
-  const r=calc();
-  const rowsEl=document.getElementById('rows');
-  rowsEl.innerHTML=r.out.map((d,i)=>{
-    const cls=d.start?'start':(d.stop>0?'stop':'');
-    const dot=d.start?'<span class="dot"></span>':(d.stop>0?'<span class="dot"></span>':'');
-    const stopCell=d.stopId
-      ? `<input class="miniinput" type="number" min="0" max="120" value="${d.stop}" oninput="document.getElementById('${d.stopId}').value=this.value;render()">`
-      : (i===0?'<span class="muted">—</span>':'<span class="muted">0</span>');
-    const margTxt=d.marg?((d.marg>0?'+':'')+d.marg):'<span class="muted">0</span>';
-    return `<div class="row ${cls}">
-      <div class="cell depot">${dot}${d.n}</div>
+// Build the table rows. Run once on load and on language change (depot names differ).
+// Intermediate depots carry editable margin + stop inputs; the start and finish rows don't.
+function buildRows(){
+  const t=I18N[LANG]||I18N.sv;
+  const last=DEPOTS.length-1;
+  document.getElementById('rows').innerHTML=DEPOTS.map((d,i)=>{
+    const name=(t.depots&&t.depots[d.n])||d.n;
+    const editable=i!==0&&i!==last;
+    const margCell=editable
+      ? `<input class="miniinput" type="number" step="1" value="${margins[i]}" oninput="setMarg(${i},this.value)">`
+      : '<span class="muted">—</span>';
+    const stopCell=editable
+      ? `<input class="miniinput" type="number" min="0" max="120" value="${stops[i]}" oninput="setStop(${i},this.value)">`
+      : '<span class="muted">—</span>';
+    return `<div class="row" id="row-${i}">
+      <div class="cell depot"><span class="dot"></span>${name}</div>
       <div class="cell"><span class="km-pill">${d.km}</span></div>
       <div class="cell c-hide">${d.str??'<span class="muted">—</span>'}</div>
-      <div class="cell c-hide">${margTxt}</div>
+      <div class="cell">${margCell}</div>
       <div class="cell">${stopCell}</div>
-      <div class="cell">${i===0?'00:00':fmtdur(d.departSince)}</div>
-      <div class="cell clock">${fmt(d.clockOut)}</div>
+      <div class="cell" id="since-${i}"></div>
+      <div class="cell clock" id="clock-${i}"></div>
     </div>`;
   }).join('');
-
-  document.getElementById('stats').innerHTML=`
-    <div class="stat"><div class="k">Rullsnitt</div><div class="v">${r.rideAvg.toFixed(1)}</div></div>
-    <div class="stat"><div class="k">Totalsnitt</div><div class="v">${r.totalAvg.toFixed(1)}</div></div>
-    <div class="stat"><div class="k">Cykeltid</div><div class="v">${fmtdur(r.rideMin)}</div></div>
-    <div class="stat"><div class="k">Stopptid</div><div class="v">${fmtdur(r.stopTotal)}</div></div>`;
+  update();
 }
+
+// Recompute and refresh only the derived cells + stats; leaves the inputs untouched
+// so editing keeps focus and partial values (e.g. a lone "-") aren't clobbered.
+function update(){
+  const t=I18N[LANG]||I18N.sv;
+  const r=calc();
+  r.out.forEach((d,i)=>{
+    const cls=d.start?'start':(d.stop>0?'stop':'');
+    document.getElementById('row-'+i).className='row'+(cls?' '+cls:'');
+    document.getElementById('since-'+i).textContent=fmtdur(d.departSince);
+    document.getElementById('clock-'+i).textContent=fmt(d.clockOut);
+  });
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><div class="k">${t.statRide}</div><div class="v">${r.rideAvg.toFixed(1)}</div></div>
+    <div class="stat"><div class="k">${t.statTotal}</div><div class="v">${r.totalAvg.toFixed(1)}</div></div>
+    <div class="stat"><div class="k">${t.statRideTime}</div><div class="v">${fmtdur(r.rideMin)}</div></div>
+    <div class="stat"><div class="k">${t.statStopTime}</div><div class="v">${fmtdur(r.stopTotal)}</div></div>`;
+}
+
+function setMarg(i,v){ margins[i]=parseFloat(v)||0; update(); }
+function setStop(i,v){ const n=parseFloat(v)||0; stops[i]=n<0?0:n; update(); }
 
 function resetAll(){
   document.getElementById('start').value="05:03";
-  document.getElementById('stopFag').value=10;
-  document.getElementById('stopBov').value=10;
-  document.getElementById('avg').value=32.9;
-  render();
+  document.getElementById('avg').value=26.5;
+  margins=DEPOTS.map(()=>0);
+  stops=DEPOTS.map(()=>0);
+  buildRows();
 }
 
-['start','stopFag','stopBov','avg'].forEach(id=>
-  document.getElementById(id).addEventListener('input',render));
-render();
+['start','avg'].forEach(id=>
+  document.getElementById(id).addEventListener('input',update));
+document.getElementById('lang').addEventListener('change',e=>applyLang(e.target.value));
+applyLang(LANG);
 </script>
 </body>
 </html>
