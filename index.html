@@ -189,7 +189,9 @@ button.act.blu{background:var(--blu);color:var(--cream)}
 <footer>Tjofräs! · Byggd med dalahäst-energi 🐴 · Tider är riktvärden</footer>
 
 <script>
-// Depots: name, km, leg distance (Str), leg speed override, margin min, stopId
+// Depots: name, km, leg distance (Str), baseline leg speed, margin min, stopId.
+// Baseline speeds are relative to BASE; the avg input scales every leg proportionally.
+const BASE = 32.9;
 const DEPOTS = [
   {n:"Motala ut",   km:0,   str:null, spd:null, marg:0,  start:true},
   {n:"Ödeshög",     km:47,  str:47,   spd:32.9, marg:0},
@@ -220,7 +222,7 @@ function calc(){
   DEPOTS.forEach((d,i)=>{
     let legMin=0, marg=d.marg||0;
     if(d.str!=null){
-      const spd=d.spd||avg;
+      const spd=(d.spd||BASE)*(avg/BASE);   // scale leg speed with the average input
       legMin=(d.str/spd)*60;
     }
     const arrive=elapsed+legMin+marg;
