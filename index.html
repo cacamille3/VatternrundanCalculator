@@ -69,7 +69,7 @@ h1 em{font-style:italic;color:var(--gul)}
 main{max-width:1180px;margin:0 auto;padding:34px 18px 80px}
 
 .controls{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
   background:#fff;border:3px solid var(--ink);border-radius:20px;padding:22px;
   box-shadow:8px 8px 0 var(--blu);margin-bottom:30px;
 }
@@ -135,7 +135,7 @@ button.act.blu{background:var(--blu);color:var(--cream)}
 @media(max-width:768px){
   .kicker{letter-spacing:.22em;font-size:11px}
   .horse{font-size:44px}
-  .controls{grid-template-columns:1fr 1fr;gap:12px;padding:16px}
+  .controls{gap:12px;padding:16px}
   .thead .h-hide,.cell.c-hide{display:none}
   .thead,.row{grid-template-columns:1.5fr .55fr .85fr .85fr .9fr .9fr}
   .thead div{padding:8px 3px;font-size:10px;letter-spacing:.02em}
@@ -168,7 +168,7 @@ button.act.blu{background:var(--blu);color:var(--cream)}
       <input type="time" id="start" value="05:03">
     </div>
     <div class="ctl">
-      <label data-i18n="avg">Generellt rullsnitt (km/h)</label>
+      <label data-i18n="avg">Rullsnitt (km/h)</label>
       <input type="number" id="avg" value="26.5" step="0.1" min="15" max="50">
     </div>
   </div>
@@ -239,7 +239,7 @@ const I18N = {
     title:"Vätternrundan · Idealtidsplanerare",
     kicker:"Idealtider · 315 km runt Vättern",
     sub:"Ställ in din starttid och dina depåstopp — så räknar planeraren ut dina klocktider, rullsnitt och cykeltid på direkten. Lycka till, cyklist! 🚴",
-    startTime:"Starttid", avg:"Generellt rullsnitt (km/h)",
+    startTime:"Starttid", avg:"Rullsnitt (km/h)",
     thDepot:"Depå", thKm:"km", thStr:"Str", thMarg:"Marg", thStop:"Stopp", thSince:"Sedan", thClock:"Klockan",
     legStart:"Start", legPlanned:"Planerat depåstopp", legRolling:"Rullande depå",
     legMarg:"Marg = manuell justering ±min (motvind/medvind/backar)",
@@ -251,7 +251,7 @@ const I18N = {
     title:"Vätternrundan · Ideal Time Planner",
     kicker:"Ideal times · 315 km around Vättern",
     sub:"Set your start time and your depot stops — the planner instantly works out your clock times, rolling average and ride time. Good luck, cyclist! 🚴",
-    startTime:"Start time", avg:"General rolling avg (km/h)",
+    startTime:"Start time", avg:"Rolling avg (km/h)",
     thDepot:"Depot", thKm:"km", thStr:"Leg", thMarg:"Marg", thStop:"Stop", thSince:"Elapsed", thClock:"Clock",
     legStart:"Start", legPlanned:"Planned depot stop", legRolling:"Rolling depot",
     legMarg:"Marg = manual adjustment ±min (headwind/tailwind/hills)",
@@ -264,7 +264,7 @@ const I18N = {
     title:"Vätternrundan · Planificateur de temps idéal",
     kicker:"Temps idéaux · 315 km autour du Vättern",
     sub:"Réglez votre départ et vos arrêts aux dépôts — le planificateur calcule vos horaires, moyennes et temps de vélo. Bonne chance ! 🚴",
-    startTime:"Heure de départ", avg:"Moyenne roulante générale (km/h)",
+    startTime:"Heure de départ", avg:"Moy. roulante (km/h)",
     thDepot:"Dépôt", thKm:"km", thStr:"Étape", thMarg:"Marge", thStop:"Arrêt", thSince:"Écoulé", thClock:"Heure",
     legStart:"Départ", legPlanned:"Arrêt dépôt planifié", legRolling:"Dépôt mobile",
     legMarg:"Marge = ajustement manuel ±min (vent de face/arrière/côtes)",
@@ -277,7 +277,7 @@ const I18N = {
     title:"Vätternrundan · Idealzeit-Planer",
     kicker:"Idealzeiten · 315 km rund um den Vättern",
     sub:"Stelle Startzeit und Depot-Stopps ein — der Planer berechnet Uhrzeiten, Rollschnitt und Fahrzeit. Viel Erfolg! 🚴",
-    startTime:"Startzeit", avg:"Allg. Rollschnitt (km/h)",
+    startTime:"Startzeit", avg:"Rollschnitt (km/h)",
     thDepot:"Depot", thKm:"km", thStr:"Etappe", thMarg:"Marg", thStop:"Stopp", thSince:"Dauer", thClock:"Uhrzeit",
     legStart:"Start", legPlanned:"Geplanter Depot-Stopp", legRolling:"Rollendes Depot",
     legMarg:"Marg = manuelle Anpassung ±Min (Gegenwind/Rückenwind/Hügel)",
