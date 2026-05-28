@@ -165,7 +165,7 @@ button.act.blu{background:var(--blu);color:var(--cream)}
   <div class="controls">
     <div class="ctl">
       <label data-i18n="startTime">Starttid</label>
-      <input type="time" id="start" value="05:03">
+      <input type="text" id="start" value="05:03" inputmode="numeric" maxlength="5" placeholder="hh:mm">
     </div>
     <div class="ctl">
       <label data-i18n="avg">Rullsnitt (km/h)</label>
@@ -315,10 +315,22 @@ const pad=n=>String(n).padStart(2,'0');
 const fmt=m=>{m=Math.round(m);return pad(Math.floor(m/60)%24)+":"+pad(((m%60)+60)%60)};
 const fmtdur=m=>{m=Math.round(m);return pad(Math.floor(m/60))+":"+pad(m%60)};
 
+// Read the start-time text field. Accepts "H:MM"/"HH:MM" or bare digits "HMM"/"HHMM"
+// (mobile numeric keypad has no colon); falls back to 05:03 if nothing valid is entered.
+function getStartMin(){
+  const v=(document.getElementById('start').value||'').trim();
+  let h,m;
+  if(v.indexOf(':')>=0){const p=v.split(':');h=parseInt(p[0],10);m=parseInt(p[1],10);}
+  else{const d=v.replace(/\D/g,'').slice(0,4);
+    if(d.length<=2){h=parseInt(d,10);m=0;}
+    else{h=parseInt(d.slice(0,d.length-2),10);m=parseInt(d.slice(-2),10);}}
+  if(isNaN(h)) return 5*60+3;
+  if(isNaN(m)) m=0;
+  return Math.max(0,Math.min(23,h))*60+Math.max(0,Math.min(59,m));
+}
+
 function calc(){
-  const startStr=document.getElementById('start').value||"05:03";
-  const [sh,sm]=startStr.split(':').map(Number);
-  const startMin=sh*60+sm;
+  const startMin=getStartMin();
   const avg=parseFloat(document.getElementById('avg').value)||26.5;
 
   let elapsed=0, stopTotal=0, marginTotal=0;
@@ -395,6 +407,14 @@ function update(){
 function setMarg(i,v){ margins[i]=parseFloat(v)||0; update(); }
 function setStop(i,v){ const n=parseFloat(v)||0; stops[i]=n<0?0:n; update(); }
 
+// When the start field loses focus, normalise whatever was typed back to HH:MM.
+function normStart(){
+  const el=document.getElementById('start');
+  const min=getStartMin();
+  el.value=pad(Math.floor(min/60))+':'+pad(min%60);
+  update();
+}
+
 function resetAll(){
   document.getElementById('start').value="05:03";
   document.getElementById('avg').value=26.5;
@@ -405,6 +425,7 @@ function resetAll(){
 
 ['start','avg'].forEach(id=>
   document.getElementById(id).addEventListener('input',update));
+document.getElementById('start').addEventListener('change',normStart);
 document.getElementById('lang').addEventListener('change',e=>applyLang(e.target.value));
 applyLang(LANG);
 </script>
