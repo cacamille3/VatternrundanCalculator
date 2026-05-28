@@ -57,7 +57,7 @@ h1 em{font-style:italic;color:var(--gul)}
   filter:drop-shadow(0 6px 0 rgba(0,0,0,.2))}
 .horse.left{left:24px;right:auto;transform:scaleX(-1) rotate(-8deg)}
 
-.langsel{position:absolute;top:14px;right:16px;display:flex;align-items:center;z-index:5}
+.langsel{display:flex;justify-content:center;align-items:center;margin:38px 0 4px}
 .langsel select{font-family:'Archivo Narrow';font-weight:700;text-transform:uppercase;
   letter-spacing:.06em;font-size:13px;padding:7px 10px;border:2px solid var(--ink);
   border-radius:10px;background:var(--gul);color:var(--blu);cursor:pointer;
@@ -131,28 +131,28 @@ button.act:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
 button.act:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 button.act.blu{background:var(--blu);color:var(--cream)}
 
-@media(max-width:760px){
+/* Phones & small tablets: keep the table, just compact it. */
+@media(max-width:768px){
+  .kicker{letter-spacing:.22em;font-size:11px}
+  .horse{font-size:44px}
   .thead .h-hide,.cell.c-hide{display:none}
-  .thead,.row{grid-template-columns:1.2fr .5fr .8fr .8fr .85fr .85fr}
-  .cell{padding:9px 5px;font-size:13px}
-  .depot{font-size:14px;gap:6px}
-  .km-pill{font-size:10px;padding:2px 5px}
-  .miniinput{width:100%;padding:5px 2px;font-size:13px}
-  .clock{font-size:15px}
+  .thead,.row{grid-template-columns:1.5fr .55fr .85fr .85fr .9fr .9fr}
+  .thead div{padding:8px 3px;font-size:10px;letter-spacing:.02em}
+  .cell{padding:7px 4px;font-size:12px}
+  .depot{font-size:13px;gap:5px}
+  .km-pill{font-size:9px;padding:2px 5px}
+  .clock{font-size:13px}
+  .miniinput{width:100%;padding:6px 2px;font-size:13px}
+  .stats{grid-template-columns:repeat(4,1fr);gap:8px}
+  .stat{padding:clamp(8px,2.2vw,18px) clamp(5px,1.6vw,20px)}
+  .stat .k{font-size:clamp(8px,2.4vw,12px)}
+  .stat .v{font-size:clamp(15px,4.6vw,34px)}
 }
 </style>
 </head>
 <body>
 <div class="flagband"></div>
 <header>
-  <div class="langsel">
-    <select id="lang" aria-label="Language / Språk">
-      <option value="sv">🐴 Svenska</option>
-      <option value="en">🫖 English</option>
-      <option value="fr">🥐 Français</option>
-      <option value="de">🥨 Deutsch</option>
-    </select>
-  </div>
   <span class="horse left">🐴</span><span class="horse">🐴</span>
   <div class="kicker" data-i18n="kicker">Idealtider · 315 km runt Vättern</div>
   <h1>VÄTTERN<em>RUNDAN</em></h1>
@@ -181,7 +181,7 @@ button.act.blu{background:var(--blu);color:var(--cream)}
       <div class="h-hide" data-i18n="thStr">Str</div>
       <div data-i18n="thMarg">Marg</div>
       <div data-i18n="thStop">Stopp</div>
-      <div data-i18n="thSince">Sedan start</div>
+      <div data-i18n="thSince">Sedan</div>
       <div data-i18n="thClock">Klockan</div>
     </div>
     <div id="rows"></div>
@@ -197,6 +197,14 @@ button.act.blu{background:var(--blu);color:var(--cream)}
   <div class="btns">
     <button class="act blu" data-i18n="btnPrint" onclick="window.print()">🖨️ Skriv ut</button>
     <button class="act" data-i18n="btnReset" onclick="resetAll()">↺ Återställ</button>
+  </div>
+  <div class="langsel">
+    <select id="lang" aria-label="Language / Språk">
+      <option value="sv">🐴 Svenska</option>
+      <option value="en">🫖 English</option>
+      <option value="fr">🥐 Français</option>
+      <option value="de">🥨 Deutsch</option>
+    </select>
   </div>
 </main>
 
@@ -233,7 +241,7 @@ const I18N = {
     kicker:"Idealtider · 315 km runt Vättern",
     sub:"Ställ in din starttid och dina depåstopp — så räknar planeraren ut dina klocktider, rullsnitt och cykeltid på direkten. Lycka till, cyklist! 🚴",
     startTime:"Starttid", avg:"Generellt rullsnitt (km/h)",
-    thDepot:"Depå", thKm:"km", thStr:"Str", thMarg:"Marg", thStop:"Stopp", thSince:"Sedan start", thClock:"Klockan",
+    thDepot:"Depå", thKm:"km", thStr:"Str", thMarg:"Marg", thStop:"Stopp", thSince:"Sedan", thClock:"Klockan",
     legStart:"Start", legPlanned:"Planerat depåstopp", legRolling:"Rullande depå",
     legMarg:"Marg = manuell justering ±min (motvind/medvind/backar)",
     btnPrint:"🖨️ Skriv ut", btnReset:"↺ Återställ",
@@ -245,7 +253,7 @@ const I18N = {
     kicker:"Ideal times · 315 km around Vättern",
     sub:"Set your start time and your depot stops — the planner instantly works out your clock times, rolling average and ride time. Good luck, cyclist! 🚴",
     startTime:"Start time", avg:"General rolling avg (km/h)",
-    thDepot:"Depot", thKm:"km", thStr:"Leg", thMarg:"Marg", thStop:"Stop", thSince:"Since start", thClock:"Clock",
+    thDepot:"Depot", thKm:"km", thStr:"Leg", thMarg:"Marg", thStop:"Stop", thSince:"Elapsed", thClock:"Clock",
     legStart:"Start", legPlanned:"Planned depot stop", legRolling:"Rolling depot",
     legMarg:"Marg = manual adjustment ±min (headwind/tailwind/hills)",
     btnPrint:"🖨️ Print", btnReset:"↺ Reset",
@@ -258,7 +266,7 @@ const I18N = {
     kicker:"Temps idéaux · 315 km autour du Vättern",
     sub:"Réglez votre départ et vos arrêts aux dépôts — le planificateur calcule vos horaires, moyennes et temps de vélo. Bonne chance ! 🚴",
     startTime:"Heure de départ", avg:"Moyenne roulante générale (km/h)",
-    thDepot:"Dépôt", thKm:"km", thStr:"Étape", thMarg:"Marge", thStop:"Arrêt", thSince:"Depuis départ", thClock:"Heure",
+    thDepot:"Dépôt", thKm:"km", thStr:"Étape", thMarg:"Marge", thStop:"Arrêt", thSince:"Écoulé", thClock:"Heure",
     legStart:"Départ", legPlanned:"Arrêt dépôt planifié", legRolling:"Dépôt mobile",
     legMarg:"Marge = ajustement manuel ±min (vent de face/arrière/côtes)",
     btnPrint:"🖨️ Imprimer", btnReset:"↺ Réinitialiser",
@@ -271,7 +279,7 @@ const I18N = {
     kicker:"Idealzeiten · 315 km rund um den Vättern",
     sub:"Stelle Startzeit und Depot-Stopps ein — der Planer berechnet Uhrzeiten, Rollschnitt und Fahrzeit. Viel Erfolg! 🚴",
     startTime:"Startzeit", avg:"Allg. Rollschnitt (km/h)",
-    thDepot:"Depot", thKm:"km", thStr:"Etappe", thMarg:"Marg", thStop:"Stopp", thSince:"Seit Start", thClock:"Uhrzeit",
+    thDepot:"Depot", thKm:"km", thStr:"Etappe", thMarg:"Marg", thStop:"Stopp", thSince:"Dauer", thClock:"Uhrzeit",
     legStart:"Start", legPlanned:"Geplanter Depot-Stopp", legRolling:"Rollendes Depot",
     legMarg:"Marg = manuelle Anpassung ±Min (Gegenwind/Rückenwind/Hügel)",
     btnPrint:"🖨️ Drucken", btnReset:"↺ Zurücksetzen",
